@@ -15,22 +15,28 @@ public class Admin extends User {
     @Column(name="Manage Users", nullable=false)
     private boolean canManageUsers;
 
-    @Column(name="Manage Sales",nullable = false)
-    private boolean canManageSales;
+    @Column(name="Manage Rooms",nullable = false)
+    private boolean canManageRooms;
 
-    public Admin(Long id, String name, String email, String password, Role role, boolean canManageUsers, boolean canManageSales) {
+    public Admin(Long id, String name, String email, String password, Role role, boolean canManageUsers, boolean canManageRooms) {
         super(id, name, email, password, role);
         this.canManageUsers = canManageUsers;
-        this.canManageSales = canManageSales;
+        this.canManageRooms = canManageRooms;
     }
 
-    public Admin(boolean canManageUsers, boolean canManageSales) {
+    public Admin(boolean canManageUsers, boolean canManageRooms) {
         super();
         this.canManageUsers = canManageUsers;
-        this.canManageSales = canManageSales;
+        this.canManageRooms = canManageRooms;
     }
 
+    public void manageUsers() {
 
+    }
+
+    public void manageRooms() {
+
+    }
 
     public void confirmReservation(){
 

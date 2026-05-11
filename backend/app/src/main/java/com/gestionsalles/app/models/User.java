@@ -25,5 +25,8 @@ public abstract class User {
     public String login(){
         return null;
     }
+    public String logout(){
+        return null;
+    }
 }
 
