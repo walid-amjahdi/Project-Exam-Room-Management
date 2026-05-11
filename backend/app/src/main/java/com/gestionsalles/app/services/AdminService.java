@@ -1,8 +1,6 @@
 package com.gestionsalles.app.services;
 
 import com.gestionsalles.app.models.Admin;
-import com.gestionsalles.app.models.Role;
-import com.gestionsalles.app.models.Admin;
 import com.gestionsalles.app.models.User;
 import com.gestionsalles.app.repositories.AdminRepository;
 import com.gestionsalles.app.repositories.UserRepository;

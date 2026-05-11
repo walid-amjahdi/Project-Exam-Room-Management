@@ -1,6 +1,5 @@
 package com.gestionsalles.app.services;
 
-import com.gestionsalles.app.models.Role;
 import com.gestionsalles.app.models.Teacher;
 import com.gestionsalles.app.models.User;
 import com.gestionsalles.app.repositories.TeacherRepository;
