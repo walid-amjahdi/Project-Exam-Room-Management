@@ -1,11 +1,13 @@
-package com.gestionsalles.app.repositories;
+package com.example.demo.repos;
 
-import com.gestionsalles.app.models.Teacher;
+import com.example.demo.models.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
+
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher,Long> {
-    //teacher specific logic
-
+    Optional<Teacher> findByEmail(String email);
 }

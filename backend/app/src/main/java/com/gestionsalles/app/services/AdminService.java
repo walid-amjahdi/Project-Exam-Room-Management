@@ -1,106 +1,98 @@
-package com.gestionsalles.app.services;
+package com.example.demo.services;
 
-import com.gestionsalles.app.models.Admin;
-import com.gestionsalles.app.models.User;
-import com.gestionsalles.app.repositories.AdminRepository;
-import com.gestionsalles.app.repositories.UserRepository;
+import com.example.demo.models.Admin;
+import com.example.demo.models.Reservation;
+import com.example.demo.repos.AdminRepository;
+import com.example.demo.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.gestionsalles.app.models.Role.ADMIN;
-
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-
-    //parent repo
+    private final AdminRepository adminRepo;
     private final UserRepository userRepo;
 
-    //children repo
-    private final AdminRepository adminRepo;
 
-
-
-    public ResponseEntity<List<User>> findByNameOrEmail (String nameoremail) {
-        List<User> admin;
-        if(nameoremail.contains("@")){
-            admin=userRepo.findAllByEmail(nameoremail);
-        }else{
-            admin=userRepo.findAllByName(nameoremail);
-        }
-        if(admin.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(admin);
+    public List<Admin> getAllAdmins() {
+        return adminRepo.findAll();
     }
 
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        if(adminRepo.findAll().isEmpty()) {
-            List<Admin> admins=new ArrayList<>();
+    public Optional<Admin> addAdmin(Admin admin) {
+        Optional<Admin> a=findByEmail(admin.getEmail());
+        if(!a.isPresent() && !userRepo.existsByEmail(admin.getEmail())){
+            return Optional.of(adminRepo.save(admin));
+        }
+        return Optional.empty();
+    }
 
-            for(int i=0; i < 10; i++ ) {
-                admins.add(new Admin());
+    public Optional<Admin> updateAdminById(Long id, Admin admin) {
+        Optional<Admin> admin1=findById(id);
+        if(admin1.isPresent()){
+            admin.setId(id);
+            adminRepo.save(admin);
+            return findByEmail(admin.getEmail());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Admin> patchAdminById(Long id, Admin admin) {
+        Optional<Admin> admin1=findById(id);
+
+        if(admin1.isPresent()){
+            if (admin.getEmail() != null) {
+                admin1.get().setEmail(admin.getEmail());
+            }
+            if (admin.getName() != null) {
+                admin1.get().setName(admin.getName());
             }
 
-            for(Admin t:admins) {
-                t.setName("Admin " + (admins.indexOf(t) + 1));
-                t.setEmail("Admin" + (admins.indexOf(t) + 1) + "email@gmail.com");
-                t.setPassword("password" + (admins.indexOf(t) + 1));
-                t.setCanManageRooms(admins.indexOf(t) == admins.indexOf(t) % 2);
-                t.setCanManageUsers(admins.indexOf(t) == admins.indexOf(t) % 2);
-                t.setRole(ADMIN);
-                adminRepo.save(t);
+            if (admin.getRole() != null) {
+                admin1.get().setRole(admin.getRole());
             }
-            return ResponseEntity.ok(adminRepo.findAll());
+            if (admin.getPassword() != null) {
+                admin1.get().setPassword(admin.getPassword());
+            }
+            if(admin.getIsSudo()!=admin1.get().getIsSudo()){
+                admin1.get().setIsSudo(admin.getIsSudo());
+            }
+            adminRepo.save(admin1.get());
+            return admin1;
         }
-        return ResponseEntity.ok(adminRepo.findAll());
-    }
-    //admin save
-
-    public ResponseEntity<Admin> addAdmin(Admin admin) {
-        return ResponseEntity.ok(adminRepo.save(admin));
+            return Optional.empty();
     }
 
-    public ResponseEntity<Admin> updateAdminById(Long id, Admin admin) {
-         Optional<Admin> existingAdmin= adminRepo.findById(id);
-         if(existingAdmin.isPresent()){
-             admin.setId(existingAdmin.get().getId());
-             return ResponseEntity.ok(adminRepo.save(admin));
-         }
-         return ResponseEntity.notFound().build();
-    }
-
-    public ResponseEntity<Admin> deleteAdminById(Long id) {
-        if(adminRepo.existsById(id)){
+    public Optional<Admin> deleteAdminById(Long id) {
+        Optional<Admin> admin=findById(id);
+        if(admin.isPresent()){
             adminRepo.deleteById(id);
-            return ResponseEntity.ok().build();
+            return admin;
         }
-        return ResponseEntity.notFound().build();
+        return Optional.empty();
     }
 
-    public ResponseEntity<Admin> patchAdminById(Long id, Admin admin) {
-        Optional<Admin> existingAdmin= adminRepo.findById(id);
-        if(existingAdmin.isPresent()){
-            if(admin.getName()!=null){
-                existingAdmin.get().setName(admin.getName());
-            }
-            if(admin.getEmail()!=null){
-                existingAdmin.get().setEmail(admin.getEmail());
-            }
-            if(admin.getPassword()!=null){
-                existingAdmin.get().setPassword(admin.getPassword());
-            }
-            if(admin.getRole()!=null){
-                existingAdmin.get().setRole(admin.getRole());
-            }
-            return ResponseEntity.ok(adminRepo.save(existingAdmin.get()));
-        }
-        return ResponseEntity.notFound().build();
+    public Optional<Admin> findById(Long id){
+        return adminRepo.findById(id);
+    }
+    public Optional<Admin> findByEmail(String email) {
+        return adminRepo.findByEmail(email);
+    }
+
+    public void manageUsers(){
+
+    }
+    public void manageRooms(){
+
+    }
+    public void validateReservation(Reservation reservation){
+
+    }
+
+    public void rejectReservation(Reservation reservation){
+
+
     }
 }

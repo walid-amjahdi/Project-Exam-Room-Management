@@ -1,55 +1,63 @@
-package com.gestionsalles.app.controllers;
+package com.example.demo.controllers;
 
-import com.gestionsalles.app.models.Teacher;
-import com.gestionsalles.app.models.User;
-import com.gestionsalles.app.services.TeacherService;
+import com.example.demo.models.Teacher;
+import com.example.demo.services.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/teachers")
 @RequiredArgsConstructor
 public class TeacherController {
-
     private final TeacherService teacherServ;
 
     @GetMapping
     public ResponseEntity<List<Teacher>> getAll() {
-        return teacherServ.getAllTeachers();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id){
-        return teacherServ.getTeacherById(id);
-    }
-
-
-    //using parent User repo method
-    @GetMapping("/{nameoremail}")
-    public ResponseEntity<List<User>> getAllByNameOrEmail(@PathVariable String nameoremail){
-        return teacherServ.getTeachersByEmailOrName(nameoremail);
+        List<Teacher> teachers= teacherServ.getAllTeachers();
+        if(teachers.isEmpty()){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.ok(teachers);
     }
 
     @PostMapping("/add")
     public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher){
-        return teacherServ.addTeacher(teacher);
+        Optional<Teacher> teacher1=  teacherServ.addTeacher(teacher);
+        if(teacher1.isPresent()){
+            return ResponseEntity.ok(teacher1.get());
+        }
+        return ResponseEntity.ok(teacherServ.findByEmail(teacher.getEmail()).get());
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Teacher> updateTeacher(@PathVariable Long id,@RequestBody Teacher teacher){
-        return teacherServ.updateTeacherById(id,teacher);
+        Optional<Teacher> teacher1= teacherServ.updateTeacherById(id,teacher);
+        if(teacher1.isPresent()){
+            return ResponseEntity.ok(teacher1.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/update/{id}")
     public ResponseEntity<Teacher> updatePartialTeacher(@PathVariable Long id, @RequestBody Teacher teacher){
-        return teacherServ.updatePartialTeacherById(id,teacher);
+        Optional<Teacher> teacher1= teacherServ.updatePartialTeacherById(id,teacher);
+        if(teacher1.isPresent()){
+            return ResponseEntity.ok(teacher1.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Teacher> deleteTeacherById(@PathVariable Long id){
-        return teacherServ.deleteTeacherById(id);
+        Optional<Teacher> teacher=teacherServ.deleteTeacherById(id);
+        if(teacher.isPresent()){
+            return ResponseEntity.ok(teacher.get());
+        }
+        return ResponseEntity.badRequest().build();
     }
+
 }

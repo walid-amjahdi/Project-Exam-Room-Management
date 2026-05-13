@@ -1,114 +1,129 @@
-package com.gestionsalles.app.services;
+package com.example.demo.services;
 
-import com.gestionsalles.app.models.Teacher;
-import com.gestionsalles.app.models.User;
-import com.gestionsalles.app.repositories.TeacherRepository;
-import com.gestionsalles.app.repositories.UserRepository;
+import com.example.demo.models.Reservation;
+import com.example.demo.models.Room;
+import com.example.demo.models.Teacher;
+import com.example.demo.repos.TeacherRepository;
+import com.example.demo.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.gestionsalles.app.models.Role.TEACHER;
-
 @Service
 @RequiredArgsConstructor
-public class TeacherService{
-
+public class TeacherService {
+    private final TeacherRepository teacherRepo;
     private final UserRepository userRepo;
 
-    private final TeacherRepository teacherRepo;
+    //OneToMany
+    private ReservationService reservationServ;
 
 
-    public ResponseEntity<List<Teacher>> getAllTeachers() {
-        if(teacherRepo.findAll().isEmpty()) {
-            List<Teacher> teachers = new ArrayList<>();
-            for(int i=0; i < 10; i++ ) {
-                teachers.add(new Teacher());
-            }
+    public List<Teacher> getAllTeachers() {
+        return teacherRepo.findAll();
+    }
 
-            for(Teacher t:teachers){
-                t.setName("Teacher "+(teachers.indexOf(t)+1));
-                t.setEmail("Teacher"+(teachers.indexOf(t)+1)+"email@gmail.com");
-                t.setPassword("password"+(teachers.indexOf(t)+1));
-                t.setDepartement("Departement "+(teachers.indexOf(t)+1));
-                t.setGrade("Grade"+(teachers.indexOf(t)+1));
-                t.setRole(TEACHER);
-                teacherRepo.save(t);
-            }
-            return ResponseEntity.ok(teachers);
+    public Optional<Teacher> addTeacher(Teacher teacher) {
+        Optional<Teacher> t=findByEmail(teacher.getEmail());
+        if(!t.isPresent() && !userRepo.existsByEmail(teacher.getEmail())){
+
+            return Optional.of(teacherRepo.save(teacher));
         }
-        return ResponseEntity.ok(teacherRepo.findAll());
+        return Optional.empty();
     }
 
-    public ResponseEntity<Teacher> getTeacherById(Long id) {
-        Optional<Teacher> teacher= teacherRepo.findById(id);
-        if(teacher.isPresent()){
-            return ResponseEntity.ok(teacher.get());
+    public Optional<Teacher> findByEmail(String email) {
+        return teacherRepo.findByEmail(email);
+    }
+
+    public Optional<Teacher> updateTeacherById(Long id, Teacher teacher) {
+        Optional<Teacher> teacher1= findById(id);
+        if(teacher1.isPresent()){
+            teacher.setId(id);
+            teacherRepo.save(teacher);
+            return Optional.of(teacher);
         }
-        return ResponseEntity.notFound().build();
+        return Optional.empty();
     }
 
-
-    //using parent repo method here ^ ^
-    public ResponseEntity<List<User>> getTeachersByEmailOrName(String nameoremail) {
-        if(nameoremail.contains("@")){
-            return ResponseEntity.ok(userRepo.findAllByEmail(nameoremail));
-        }
-        return ResponseEntity.ok(userRepo.findAllByName(nameoremail));
-
-    }
-
-    public ResponseEntity<Teacher> addTeacher(Teacher teacher) {
-        return ResponseEntity.ok(teacherRepo.save(teacher));
-    }
-
-    public ResponseEntity<Teacher> updateTeacherById(Long id, Teacher teacher) {
-        Optional<Teacher> existingTeacher= teacherRepo.findById(id);
-        if(existingTeacher.isPresent()){
-            return ResponseEntity.ok(teacherRepo.save(teacher));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    public ResponseEntity<Teacher> updatePartialTeacherById(Long id, Teacher teacher) {
-        Optional<Teacher> existingTeacher= teacherRepo.findById(id);
-
-        if(existingTeacher.isPresent()){
-            if(teacher.getDepartement()!=null){
-                existingTeacher.get().setDepartement(teacher.getDepartement());
-            }
+    public Optional<Teacher> updatePartialTeacherById(Long id, Teacher teacher) {
+        Optional<Teacher> teacher1 = findById(id);
+        if(teacher1.isPresent()){
             if(teacher.getEmail()!=null){
-                existingTeacher.get().setEmail(teacher.getEmail());
-            }
-            if(teacher.getGrade()!=null){
-                existingTeacher.get().setGrade(teacher.getGrade());
+                teacher1.get().setEmail(teacher.getEmail());
             }
             if(teacher.getName()!=null){
-                existingTeacher.get().setName(teacher.getName());
+                teacher1.get().setName(teacher.getName());
             }
-            if(teacher.getPassword()!=null){
-                existingTeacher.get().setPassword(teacher.getPassword());
+            if(teacher.getGrade()!=null){
+                teacher1.get().setGrade(teacher.getGrade());
             }
             if(teacher.getRole()!=null){
-                existingTeacher.get().setRole(teacher.getRole());
+                teacher1.get().setRole(teacher.getRole());
             }
-            return ResponseEntity.ok(teacherRepo.save(existingTeacher.get()));
+            if(teacher.getDepartement()!=null){
+                teacher1.get().setDepartement(teacher.getDepartement());
+            }
+            if(teacher.getPassword()!=null){
+                teacher1.get().setPassword(teacher.getPassword());
+            }
+            teacherRepo.save(teacher1.get());
+            return teacher1;
         }
-        return ResponseEntity.notFound().build();
+        return Optional.empty();
+    }
+
+    public Optional<Teacher> deleteTeacherById(Long id) {
+        Optional<Teacher> teacher= findById(id);
+        if(teacher.isPresent()){
+            teacherRepo.deleteById(id);
+            return teacher;
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Teacher> findById(Long id) {
+        return teacherRepo.findById(id);
+    }
+
+    public List<Reservation> findTeacherReservations(Teacher teacher){
+        return teacher.getTeacher_reservations();
+    }
+
+    public Optional<Teacher> addReservationToTeacher(List<Reservation> reservations,Teacher teacher){
+
+        Optional<Teacher> t= teacherRepo.findById(teacher.getId());
+
+        if(t.isPresent()){
+            for(Reservation r : reservations){
+                reservationServ.addReservation(r);
+            }
+            return Optional.of(teacherRepo.save(t.get()));
+        }
+        return Optional.empty();
+
 
     }
 
-    public ResponseEntity<Teacher> deleteTeacherById(Long id) {
-        Optional<Teacher> existingTeacher= teacherRepo.findById(id);
 
-        if(existingTeacher.isPresent()){
-            teacherRepo.deleteById(id);
-            return ResponseEntity.ok(existingTeacher.get());
-        }
-        return ResponseEntity.notFound().build();
+    public void requestReservation(){
+
+    }
+
+    public void viewReservations(){
+
+    }
+
+    public void cancelReservation(Reservation reservation){
+
+    }
+
+    public List<Room> viewAvailableRooms (Date date){
+
+
+        return null;
     }
 }

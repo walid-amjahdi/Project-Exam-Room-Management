@@ -1,14 +1,12 @@
-package com.gestionsalles.app.repositories;
+package com.example.demo.repos;
 
-import com.gestionsalles.app.models.Admin;
+import com.example.demo.models.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin,Long> {
-
-    //admin specific logic
-
-
+    Optional<Admin> findByEmail(String email);
 }

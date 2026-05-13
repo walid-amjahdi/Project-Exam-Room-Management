@@ -1,21 +1,39 @@
-package com.gestionsalles.app.models;
+package com.example.demo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
+@Getter @Setter
+@Table(name="rooms")
 public class Room {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="room_id")
     private Long id;
 
+    @Column
     private String name;
     private int capacity;
+    private String building;
     private String location;
-    private boolean available;
+    private Boolean available;
+
+    @ManyToOne
+    @JoinColumn(name="room_admin")
+    private Admin room_admin;
+
+    @OneToMany(mappedBy = "reservation_room")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Reservation> room_reservations = new ArrayList<>();
+
+
+
 
 }

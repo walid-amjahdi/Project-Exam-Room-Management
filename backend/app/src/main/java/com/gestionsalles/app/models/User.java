@@ -1,32 +1,31 @@
-package com.gestionsalles.app.models;
+package com.example.demo.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+//
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Inheritance(strategy= InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
+//@MappedSuperclass
+@Getter
+@Setter
+@Table(name="users")
 public abstract class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Long id;
 
-    private  String name;
-    private String email;
+    private String name;
+
     private String password;
 
-    @Enumerated(value =  EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public String login(){
-        return null;
-    }
-    public String logout(){
-        return null;
-    }
-}
+    @Column(unique = true)
+    private String email;
 
+
+
+}

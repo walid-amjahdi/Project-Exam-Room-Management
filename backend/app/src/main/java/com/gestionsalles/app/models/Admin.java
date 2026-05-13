@@ -1,36 +1,31 @@
-package com.gestionsalles.app.models;
+package com.example.demo.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("Admin_table")
-public class Admin extends User {
+@Getter
+@Setter
+@Table(name="admins")
+@PrimaryKeyJoinColumn(name="admin_id",foreignKey = @ForeignKey(name="fk_admin_user"))
+public class Admin extends User{
 
-    @Column(name="Manage Users", nullable=false)
-    private boolean canManageUsers;
+    private Boolean isSudo;
 
-    @Column(name="Manage Rooms",nullable = false)
-    private boolean canManageRooms;
+    @OneToMany(mappedBy = "reservation_admin")
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Reservation> reservations_admin= new ArrayList<>();
 
-
-    public void manageUsers() {
-
-    }
-
-    public void manageRooms() {
-
-    }
-
-    public void confirmReservation(){
-
-    }
+    @OneToMany(mappedBy = "room_admin")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Room> rooms_admin= new ArrayList<>();
 }

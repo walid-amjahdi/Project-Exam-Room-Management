@@ -1,32 +1,37 @@
-package com.gestionsalles.app.models;
+package com.example.demo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@Data
+@Getter @Setter
+@Table(name="reservations")
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="reservation_id")
     private Long id;
 
+    @Column(unique = true)
     private Date reservationDate;
-    private String status;
 
-    public void createReservation(Date reservationDate, String status) {
-
-    }
-    public void updateReservation() {
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+    private String reason;
 
 
-    }
-    public void cancelReservation() {
+    @ManyToOne
+    @JoinColumn(name="reservation_teacher")
+    private Teacher reservation_teacher;
 
+    @ManyToOne
+    @JoinColumn(name="reservation_admin")
+    private Admin reservation_admin;
 
-    }
+    @ManyToOne
+    @JoinColumn(name="reservation_room")
+    private Room reservation_room;
+
 }

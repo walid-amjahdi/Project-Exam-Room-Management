@@ -1,28 +1,36 @@
-package com.gestionsalles.app.models;
+package com.example.demo.models;
 
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@DiscriminatorValue("Enseignant_table")
+@Table(name="teachers")
+@PrimaryKeyJoinColumn(name="teacher_id",foreignKey = @ForeignKey(name="fk_teacher_user"))
 public class Teacher extends User {
+
     private String departement;
+
     private String grade;
 
+    @Column(unique = true)
+    private String phoneNumber;
 
-    public void requestReservation(){
 
-    }
-    public void viewReservations(){
+    @OneToMany(mappedBy = "reservation_teacher")
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Reservation> teacher_reservations= new ArrayList<>();
 
-    }
+
+
+
+
+
 }
