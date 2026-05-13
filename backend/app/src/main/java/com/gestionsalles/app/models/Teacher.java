@@ -23,7 +23,7 @@ public class Teacher extends User {
     private String phoneNumber;
 
 
-    @OneToMany(mappedBy = "reservation_teacher")
+    @OneToMany(mappedBy = "teacher")
     @JsonIgnore
     @ToString.Exclude
     private List<Reservation> teacher_reservations= new ArrayList<>();

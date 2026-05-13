@@ -1,8 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.Reservation;
-import com.example.demo.models.Room;
-import com.example.demo.models.Teacher;
+import com.example.demo.models.*;
 import com.example.demo.repos.TeacherRepository;
 import com.example.demo.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +44,7 @@ public class TeacherService {
             teacherRepo.save(teacher);
             return Optional.of(teacher);
         }
+
         return Optional.empty();
     }
 
@@ -125,5 +124,15 @@ public class TeacherService {
 
 
         return null;
+    }
+
+    public List<Object[]> getInfo(Long id){
+        Optional<User> t=userRepo.findFirstByRole(Role.TEACHER);
+        if(t.isPresent() && id < t.get().getId()){
+            return userRepo.findEmailAndNameAndRoleById(id+ t.get().getId() );
+        }else if(!t.isPresent()){
+            return null;
+        }
+        return userRepo.findEmailAndNameAndRoleById(id);
     }
 }

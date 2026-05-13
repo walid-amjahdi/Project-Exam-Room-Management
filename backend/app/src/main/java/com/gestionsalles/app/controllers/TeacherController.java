@@ -24,6 +24,24 @@ public class TeacherController {
         return ResponseEntity.ok(teachers);
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<List<Object[]>> getInfo(@PathVariable Long id){
+
+        List<Object[]> info= teacherServ.getInfo(id);
+
+        ResponseEntity.ok(info);
+
+        for(int i=0;i<id;i++){
+            List<Object[]> t= teacherServ.getInfo(new Long(i));
+
+            info.addAll(t);
+        }
+
+        return ResponseEntity.ok(info);
+
+
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Teacher> addTeacher(@RequestBody Teacher teacher){
         Optional<Teacher> teacher1=  teacherServ.addTeacher(teacher);

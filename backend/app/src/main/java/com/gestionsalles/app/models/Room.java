@@ -26,9 +26,9 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name="room_admin")
-    private Admin room_admin;
+    private Admin admin;
 
-    @OneToMany(mappedBy = "reservation_room")
+    @OneToMany(mappedBy = "room")
     @JsonIgnore
     @ToString.Exclude
     private List<Reservation> room_reservations = new ArrayList<>();

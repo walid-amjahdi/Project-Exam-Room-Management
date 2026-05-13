@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,56 @@ public class AdminController {
         }
         return ResponseEntity.ok(admins);
     }
+
+
+
+    @GetMapping("/reservations")
+    public ResponseEntity<List<Object[]>> getinfo(){
+        List<Object[]> rows= adminServ.getNumberofDepartements();
+        for(Object[] r:rows){
+            System.out.println("==========");
+            System.out.println("id : " + r[0]);
+            System.out.println("name : " + r[1]);
+            System.out.println("role : " + r[2]);
+            System.out.println("number of departents : " + r[3]);
+            System.out.println("==========");
+        }
+
+        List<Object[]> admininfo = adminServ.getNameAndEmail(0L);
+        for(int i=1;i<10;i++){
+            List<Object[]> a= adminServ.getNameAndEmail(new Long(i));
+            admininfo.addAll(a);
+        }
+        for(Object[] r: admininfo){
+            System.out.println("==========admin info===");
+            for(int i=0;i<r.length;i++){
+                System.out.println(i + " : " + r[i]);
+            }
+            System.out.println("==========");
+        }
+        List<Object[]> admininfos= adminServ.getEmail(10L);
+        for(int i=1;i<10;i++){
+            List<Object[]> a= adminServ.getEmail(new Long(i));
+            admininfos.addAll(a);
+        }
+        for(Object[] r:admininfos){
+            System.out.println("==========admin info===");
+            for(int i=0;i<r.length;i++){
+                System.out.println(i + " : " + r[i]);
+            }
+            System.out.println("==========");
+        }
+        return ResponseEntity.ok(admininfos);
+    }
+
+
+
+
+
+
+
+
+
 
     @PostMapping("/add")
     public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) {

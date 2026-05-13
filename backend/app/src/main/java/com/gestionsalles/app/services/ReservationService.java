@@ -35,10 +35,26 @@ public class ReservationService {
         return Optional.empty();
     }
 
+    public List<Reservation> findReservationByAdminEmail(String email){
+        return reservationRepo.findReservationByAdmin_Email(email);
+    }
+    public List<Reservation> findReservationByAdminId(Long id){
+        return reservationRepo.findReservationsByAdmin_Id(id);
+    }
+
+    public List<Reservation> findReservationByRoomName(String roomName){
+        return reservationRepo.findReservationsByRoom_Name(roomName);
+    }
+    public List<Reservation> findReservationByRoomId(Long id){
+        return reservationRepo.findReservationsByRoom_Id(id);
+    }
+
+
     public Optional<Reservation> addReservation(Reservation reservation) {
         Optional<Reservation> r=findReservationByDate(reservation.getReservationDate());
         if(!r.isPresent()){
-            return Optional.of(reservationRepo.save(reservation));
+            reservationRepo.save(reservation);
+            return findReservationByDate(reservation.getReservationDate());
         }
         return Optional.empty();
     }
@@ -63,6 +79,18 @@ public class ReservationService {
     }
 
 
+    public List<Reservation> findByTeacherEmail(String email){
+        List<Reservation> r = reservationRepo.findReservationByTeacherEmail(email);
+        if(!r.isEmpty()){
+            return r;
+        }
+        return null;
+    }
+
+
+    public List<Reservation> findByTeacherId(Long id) {
+        return reservationRepo.findReservationByTeacherId(id);
+    }
 
     public void createReservation() {
 

@@ -19,12 +19,12 @@ public class Admin extends User{
 
     private Boolean isSudo;
 
-    @OneToMany(mappedBy = "reservation_admin")
+    @OneToMany(mappedBy = "admin")
     @ToString.Exclude
     @JsonIgnore
     private List<Reservation> reservations_admin= new ArrayList<>();
 
-    @OneToMany(mappedBy = "room_admin")
+    @OneToMany(mappedBy = "admin")
     @JsonIgnore
     @ToString.Exclude
     private List<Room> rooms_admin= new ArrayList<>();

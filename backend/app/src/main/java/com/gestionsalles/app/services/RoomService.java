@@ -18,6 +18,13 @@ public class RoomService {
         return roomRepo.findByNameEquals(name);
     }
 
+    public List<Room> findByAdminEmail(String email){
+        return roomRepo.findRoomByAdminEmail(email);
+    }
+    public List<Room> findByAdminId(Long id){
+        return roomRepo.findRoomByAdminId(id);
+    }
+
 
     public List<Room> getAllRooms() {
         return roomRepo.findAll();
@@ -62,4 +69,6 @@ public class RoomService {
     public List<Reservation> getActiveReservations(){
         return null;
     }
+
+
 }

@@ -95,4 +95,17 @@ public class AdminService {
 
 
     }
+
+
+    public List<Object[]> getNumberofDepartements(){
+        return adminRepo.getAdminInfo();
+    }
+
+    public List<Object[]> getNameAndEmail(Long id){
+        return userRepo.NameAndRoleAndEmail(id);
+    }
+
+    public List<Object[]> getEmail(Long id){
+        return userRepo.findEmailAndNameAndRoleById(id);
+    }
 }

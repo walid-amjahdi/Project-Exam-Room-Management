@@ -36,6 +36,27 @@ public class RoomController {
         return ResponseEntity.notFound().build();
     }
 
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<Room>> findByAdminEmail(@RequestParam String email){
+        List<Room> rooms= roomServ.findByAdminEmail(email);
+        if(!rooms.isEmpty()){
+            return ResponseEntity.ok(rooms);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<List<Room>> findByAdminId(@PathVariable Long id){
+        List<Room> rooms= roomServ.findByAdminId(id);
+        if(!rooms.isEmpty()){
+            return ResponseEntity.ok(rooms);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
     @PostMapping("/add")
     public ResponseEntity<Room> addRoom(@RequestBody Room room){
         Optional<Room> r= roomServ.addRoom(room);
@@ -63,6 +84,17 @@ public class RoomController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

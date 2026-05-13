@@ -24,14 +24,14 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name="reservation_teacher")
-    private Teacher reservation_teacher;
+    private Teacher teacher;
 
     @ManyToOne
     @JoinColumn(name="reservation_admin")
-    private Admin reservation_admin;
+    private Admin admin;
 
     @ManyToOne
     @JoinColumn(name="reservation_room")
-    private Room reservation_room;
+    private Room room;
 
 }
