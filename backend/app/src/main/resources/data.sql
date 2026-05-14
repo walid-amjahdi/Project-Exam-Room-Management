@@ -3,17 +3,17 @@
 -- ============================================================
 
 -- Teachers
-INSERT INTO app_users (user_id, email, name, password, role) VALUES (1, 'ahaytar@teacher.com', 'Ahaytar', 'password123', 'TEACHER');
+INSERT INTO app_users (user_id, email, name, password, role, enabled) VALUES (1, 'ahaytar@teacher.com', 'Ahaytar', 'password123', 'TEACHER', TRUE);
 INSERT INTO teachers (teacher_id, department, grade) VALUES (1, 'Informatique', 'MCF');
 
-INSERT INTO app_users (user_id, email, name, password, role) VALUES (2, 'amjahdi@teacher.com', 'Amjahdi', 'password123', 'TEACHER');
+INSERT INTO app_users (user_id, email, name, password, role, enabled) VALUES (2, 'amjahdi@teacher.com', 'Amjahdi', 'password123', 'TEACHER', TRUE);
 INSERT INTO teachers (teacher_id, department, grade) VALUES (2, 'Mathématiques', 'PR');
 
 -- Admins
-INSERT INTO app_users (user_id, email, name, password, role) VALUES (11, 'ahaytar@admin.com', 'Ahaytar Admin', 'password123', 'ADMIN');
+INSERT INTO app_users (user_id, email, name, password, role, enabled) VALUES (11, 'ahaytar@admin.com', 'Ahaytar Admin', 'password123', 'ADMIN', TRUE);
 INSERT INTO admins (admin_id, is_sudo) VALUES (11, TRUE);
 
-INSERT INTO app_users (user_id, email, name, password, role) VALUES (12, 'amjahdi@admin.com', 'Amjahdi Admin', 'password123', 'ADMIN');
+INSERT INTO app_users (user_id, email, name, password, role, enabled) VALUES (12, 'amjahdi@admin.com', 'Amjahdi Admin', 'password123', 'ADMIN', TRUE);
 INSERT INTO admins (admin_id, is_sudo) VALUES (12, FALSE);
 
 -- ============================================================
