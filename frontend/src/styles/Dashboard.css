@@ -1,10 +1,10 @@
 .dashboard-container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #0f0f1a;
 }
 
 .navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-text {
@@ -12,15 +12,23 @@
 }
 
 table {
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #1a1a2e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.table {
+  --bs-table-bg: #1a1a2e;
+  --bs-table-striped-bg: #1f1f36;
+  --bs-table-hover-bg: #2a2a45;
+  --bs-table-border-color: #2d2d44;
+  margin-bottom: 0;
 }
 
 .form-section {
-  background: white;
+  background: #1a1a2e;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   margin-top: 20px;
 }
 
@@ -43,4 +51,49 @@ table {
 .btn-group-sm .btn {
   font-size: 12px;
   padding: 5px 10px;
+}
+
+.modal-content {
+  background-color: #1a1a2e;
+  color: #d1d5db;
+  border: 1px solid #2d2d44;
+}
+
+.modal-header {
+  border-bottom: 1px solid #2d2d44;
+}
+
+.modal-header .btn-close {
+  filter: invert(1);
+}
+
+.modal-footer {
+  border-top: 1px solid #2d2d44;
+}
+
+.form-label {
+  color: #d1d5db;
+}
+
+.card {
+  background-color: #1a1a2e;
+  border: 1px solid #2d2d44;
+  color: #d1d5db;
+}
+
+.shadow.p-4.rounded.bg-light {
+  background-color: #1a1a2e !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.nav-link {
+  color: #9ca3af !important;
+}
+
+.nav-link.active {
+  color: #f0f0f0 !important;
+}
+
+.nav-link:hover {
+  color: #d1d5db !important;
 }

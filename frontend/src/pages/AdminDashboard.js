@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ManageRooms from '../components/ManageRooms';
+import ManageTeachers from '../components/ManageTeachers';
+import ManageAdmins from '../components/ManageAdmins';
 import ValidationQueue from '../components/ValidationQueue';
 
 function AdminDashboard({ userEmail, handleLogout }) {
@@ -39,6 +41,24 @@ function AdminDashboard({ userEmail, handleLogout }) {
                   Manage Rooms
                 </button>
               </li>
+              <li className="nav-item">
+                <button 
+                  className={`nav-link ${activeTab === 'teachers' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('teachers')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  Manage Teachers
+                </button>
+              </li>
+              <li className="nav-item">
+                <button 
+                  className={`nav-link ${activeTab === 'admins' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('admins')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  Manage Admins
+                </button>
+              </li>
             </ul>
 
             <span className="text-light me-3">{userEmail}</span>
@@ -56,6 +76,8 @@ function AdminDashboard({ userEmail, handleLogout }) {
       <div className="container">
         {activeTab === 'validations' && <ValidationQueue />}
         {activeTab === 'rooms' && <ManageRooms />}
+        {activeTab === 'teachers' && <ManageTeachers />}
+        {activeTab === 'admins' && <ManageAdmins />}
       </div>
     </div>
   );
