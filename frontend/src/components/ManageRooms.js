@@ -171,7 +171,7 @@ function ManageRooms() {
       {rooms.length === 0 ? (
         <div className="alert alert-info">No rooms available. Add one to get started.</div>
       ) : (
-        <table className="table table-striped table-bordered table-hover">
+        <table className="table table-dark table-striped table-bordered table-hover">
           <thead>
             <tr>
               <th>Name</th>

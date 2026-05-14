@@ -135,7 +135,7 @@ function ReservationForm({ userEmail, setActiveTab }) {
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
 
-      <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-light">
+      <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-dark">
         <div className="mb-3">
           <label className="form-label">Select Room</label>
           <select

@@ -61,6 +61,7 @@ function AdminDashboard({ userEmail, handleLogout }) {
               </li>
             </ul>
 
+            <span className="badge bg-danger me-2">Admin</span>
             <span className="text-light me-3">{userEmail}</span>
             <button 
               className="btn btn-outline-light"

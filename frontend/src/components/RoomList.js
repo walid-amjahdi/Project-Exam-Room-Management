@@ -58,7 +58,7 @@ function RoomList() {
       {rooms.length === 0 ? (
         <div className="alert alert-info">No rooms available</div>
       ) : (
-        <table className="table table-striped table-bordered table-hover">
+        <table className="table table-dark table-striped table-bordered table-hover">
           <thead>
             <tr>
               <th>Room Name</th>

@@ -140,7 +140,7 @@ function MyReservations({ userEmail }) {
       {reservations.length === 0 ? (
         <div className="alert alert-info">You have no reservations yet</div>
       ) : (
-        <table className="table table-striped table-bordered table-hover">
+        <table className="table table-dark table-striped table-bordered table-hover">
           <thead>
             <tr>
               <th>Room</th>

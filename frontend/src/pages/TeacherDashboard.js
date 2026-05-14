@@ -51,6 +51,7 @@ function TeacherDashboard({ userEmail, handleLogout }) {
               </li>
             </ul>
 
+            <span className="badge bg-primary me-2">Teacher</span>
             <span className="text-light me-3">{userEmail}</span>
             <button 
               className="btn btn-outline-light"
