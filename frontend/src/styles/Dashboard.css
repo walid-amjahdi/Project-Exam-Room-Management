@@ -5,6 +5,7 @@
 
 .navbar {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #2d2d44;
 }
 
 .navbar-text {
@@ -22,6 +23,12 @@ table {
   --bs-table-hover-bg: #2a2a45;
   --bs-table-border-color: #2d2d44;
   margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #252540;
+  color: #e0e0e0;
+  border-bottom: 1px solid #3d3d5c;
 }
 
 .form-section {
@@ -88,12 +95,17 @@ table {
 
 .nav-link {
   color: #9ca3af !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
 }
 
 .nav-link.active {
   color: #f0f0f0 !important;
+  background-color: rgba(99, 102, 241, 0.15) !important;
 }
 
 .nav-link:hover {
   color: #d1d5db !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
