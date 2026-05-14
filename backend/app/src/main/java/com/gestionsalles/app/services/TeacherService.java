@@ -1,23 +1,25 @@
-package com.example.demo.services;
+package com.gestionsalles.app.services;
 
-import com.example.demo.models.*;
-import com.example.demo.repos.TeacherRepository;
-import com.example.demo.repos.UserRepository;
+import com.gestionsalles.app.models.Reservation;
+import com.gestionsalles.app.models.Role;
+import com.gestionsalles.app.models.Teacher;
+import com.gestionsalles.app.models.User;
+import com.gestionsalles.app.repos.TeacherRepository;
+import com.gestionsalles.app.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+    @Service
 @RequiredArgsConstructor
 public class TeacherService {
     private final TeacherRepository teacherRepo;
     private final UserRepository userRepo;
 
     //OneToMany
-    private ReservationService reservationServ;
+    private final ReservationService reservationServ;
 
 
     public List<Teacher> getAllTeachers() {
@@ -35,6 +37,10 @@ public class TeacherService {
 
     public Optional<Teacher> findByEmail(String email) {
         return teacherRepo.findByEmail(email);
+    }
+
+    public Optional<Teacher> login(String email, String password) {
+        return teacherRepo.findByEmailAndPassword(email, password);
     }
 
     public Optional<Teacher> updateTeacherById(Long id, Teacher teacher) {
@@ -63,8 +69,8 @@ public class TeacherService {
             if(teacher.getRole()!=null){
                 teacher1.get().setRole(teacher.getRole());
             }
-            if(teacher.getDepartement()!=null){
-                teacher1.get().setDepartement(teacher.getDepartement());
+            if(teacher.getDepartment()!=null){
+                teacher1.get().setDepartment(teacher.getDepartment());
             }
             if(teacher.getPassword()!=null){
                 teacher1.get().setPassword(teacher.getPassword());
@@ -107,24 +113,6 @@ public class TeacherService {
 
     }
 
-
-    public void requestReservation(){
-
-    }
-
-    public void viewReservations(){
-
-    }
-
-    public void cancelReservation(Reservation reservation){
-
-    }
-
-    public List<Room> viewAvailableRooms (Date date){
-
-
-        return null;
-    }
 
     public List<Object[]> getInfo(Long id){
         Optional<User> t=userRepo.findFirstByRole(Role.TEACHER);

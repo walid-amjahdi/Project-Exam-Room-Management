@@ -1,7 +1,7 @@
-package com.example.demo.controllers;
+package com.gestionsalles.app.controllers;
 
-import com.example.demo.models.Admin;
-import com.example.demo.services.AdminService;
+import com.gestionsalles.app.models.Admin;
+import com.gestionsalles.app.services.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/admins")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AdminController {
 
     private final AdminService adminServ;
@@ -27,45 +28,30 @@ public class AdminController {
         return ResponseEntity.ok(admins);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+        var admin = adminServ.findById(id);
+        if(admin.isPresent()){
+            return ResponseEntity.ok(admin.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Admin> getAdminByEmail(@PathVariable String email) {
+        var admin = adminServ.findByEmail(email);
+        if(admin.isPresent()){
+            return ResponseEntity.ok(admin.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 
     @GetMapping("/reservations")
-    public ResponseEntity<List<Object[]>> getinfo(){
-        List<Object[]> rows= adminServ.getNumberofDepartements();
-        for(Object[] r:rows){
-            System.out.println("==========");
-            System.out.println("id : " + r[0]);
-            System.out.println("name : " + r[1]);
-            System.out.println("role : " + r[2]);
-            System.out.println("number of departents : " + r[3]);
-            System.out.println("==========");
-        }
-
-        List<Object[]> admininfo = adminServ.getNameAndEmail(0L);
-        for(int i=1;i<10;i++){
-            List<Object[]> a= adminServ.getNameAndEmail(new Long(i));
-            admininfo.addAll(a);
-        }
-        for(Object[] r: admininfo){
-            System.out.println("==========admin info===");
-            for(int i=0;i<r.length;i++){
-                System.out.println(i + " : " + r[i]);
-            }
-            System.out.println("==========");
-        }
-        List<Object[]> admininfos= adminServ.getEmail(10L);
-        for(int i=1;i<10;i++){
-            List<Object[]> a= adminServ.getEmail(new Long(i));
-            admininfos.addAll(a);
-        }
-        for(Object[] r:admininfos){
-            System.out.println("==========admin info===");
-            for(int i=0;i<r.length;i++){
-                System.out.println(i + " : " + r[i]);
-            }
-            System.out.println("==========");
-        }
-        return ResponseEntity.ok(admininfos);
+    public ResponseEntity<List<Admin>> getinfo(){
+        List<Admin> admins = adminServ.getAllAdmins();
+        return ResponseEntity.ok(admins);
     }
 
 
@@ -76,6 +62,15 @@ public class AdminController {
 
 
 
+
+    @PostMapping("/login")
+    public ResponseEntity<Admin> login(@RequestBody Admin loginRequest) {
+        var admin = adminServ.login(loginRequest.getEmail(), loginRequest.getPassword());
+        if(admin.isPresent()){
+            return ResponseEntity.ok(admin.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) {

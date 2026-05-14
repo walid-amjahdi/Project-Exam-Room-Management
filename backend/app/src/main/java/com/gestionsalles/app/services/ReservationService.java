@@ -1,12 +1,13 @@
-package com.example.demo.services;
+package com.gestionsalles.app.services;
 
 
-import com.example.demo.models.Reservation;
-import com.example.demo.repos.ReservationRepository;
+import com.gestionsalles.app.models.Reservation;
+import com.gestionsalles.app.repos.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,12 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepo;
-    private final TeacherService teacherServ;
-
-
-    public Optional<Reservation> findReservationByDate(Date reservationDate) {
-        return reservationRepo.findByReservationDateEquals(reservationDate);
-    }
 
     public List<Reservation> findAllReservations() {
         return reservationRepo.findAll();
@@ -49,14 +44,28 @@ public class ReservationService {
         return reservationRepo.findReservationsByRoom_Id(id);
     }
 
+    public List<Reservation> findAllPendingReservations(){
+        return reservationRepo.findAllPendingReservations();
+    }
+
+    public List<Reservation> findByDate(LocalDate date){
+        return reservationRepo.findByReservationDate(date);
+    }
+
+    public List<Reservation> findByDateAndRoomName(LocalDate date, String roomName){
+        return reservationRepo.findByReservationDateAndRoom_Name(date, roomName);
+    }
+
 
     public Optional<Reservation> addReservation(Reservation reservation) {
-        Optional<Reservation> r=findReservationByDate(reservation.getReservationDate());
-        if(!r.isPresent()){
-            reservationRepo.save(reservation);
-            return findReservationByDate(reservation.getReservationDate());
+        // Check for conflicts before saving
+        if(checkConflicts(reservation.getRoom().getId(), reservation.getReservationDate(), 
+                         reservation.getStartTime(), reservation.getEndTime())){
+            return Optional.empty(); // Conflict exists, don't save
         }
-        return Optional.empty();
+        
+        reservationRepo.save(reservation);
+        return reservationRepo.findById(reservation.getId());
     }
 
     public Optional<Reservation> updateReservationById(Long id, Reservation reservation) {
@@ -84,7 +93,7 @@ public class ReservationService {
         if(!r.isEmpty()){
             return r;
         }
-        return null;
+        return List.of();
     }
 
 
@@ -92,26 +101,17 @@ public class ReservationService {
         return reservationRepo.findReservationByTeacherId(id);
     }
 
-    public void createReservation() {
-
-
-
-
-    }
-    public void updateReservation() {
-
-
-    }
-
-
-    public void cancelReservation(){
-
-
-    }
-
-
-    public boolean checkConflicts() {
-        return false;
+    /**
+     * Check if there are any conflicting reservations for a given room on a specific date/time
+     * @param roomId the room ID
+     * @param date the reservation date
+     * @param startTime the reservation start time
+     * @param endTime the reservation end time
+     * @return true if conflict exists, false otherwise
+     */
+    public boolean checkConflicts(Long roomId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        List<Reservation> conflicts = reservationRepo.findConflictingReservations(roomId, date, startTime, endTime);
+        return !conflicts.isEmpty();
     }
 
 }

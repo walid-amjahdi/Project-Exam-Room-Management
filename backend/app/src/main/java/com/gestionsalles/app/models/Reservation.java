@@ -1,12 +1,15 @@
-package com.example.demo.models;
+package com.gestionsalles.app.models;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="reservations")
 public class Reservation {
     @Id
@@ -14,13 +17,22 @@ public class Reservation {
     @Column(name="reservation_id")
     private Long id;
 
-    @Column(unique = true)
-    private Date reservationDate;
+    @Column(nullable = false)
+    private LocalDate reservationDate;
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
+    private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
     private String reason;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="session_id")
+    private MakeupSession makeupSession;
 
     @ManyToOne
     @JoinColumn(name="reservation_teacher")

@@ -1,7 +1,7 @@
-package com.example.demo.controllers;
+package com.gestionsalles.app.controllers;
 
-import com.example.demo.models.Teacher;
-import com.example.demo.services.TeacherService;
+import com.gestionsalles.app.models.Teacher;
+import com.gestionsalles.app.services.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/teachers")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class TeacherController {
     private final TeacherService teacherServ;
 
@@ -24,22 +25,37 @@ public class TeacherController {
         return ResponseEntity.ok(teachers);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Teacher> getTeacherById(@PathVariable Long id) {
+        var teacher = teacherServ.findById(id);
+        if(teacher.isPresent()){
+            return ResponseEntity.ok(teacher.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Teacher> getTeacherByEmail(@PathVariable String email) {
+        var teacher = teacherServ.findByEmail(email);
+        if(teacher.isPresent()){
+            return ResponseEntity.ok(teacher.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/info/{id}")
     public ResponseEntity<List<Object[]>> getInfo(@PathVariable Long id){
-
         List<Object[]> info= teacherServ.getInfo(id);
-
-        ResponseEntity.ok(info);
-
-        for(int i=0;i<id;i++){
-            List<Object[]> t= teacherServ.getInfo(new Long(i));
-
-            info.addAll(t);
-        }
-
         return ResponseEntity.ok(info);
+    }
 
-
+    @PostMapping("/login")
+    public ResponseEntity<Teacher> login(@RequestBody Teacher loginRequest) {
+        var teacher = teacherServ.login(loginRequest.getEmail(), loginRequest.getPassword());
+        if(teacher.isPresent()){
+            return ResponseEntity.ok(teacher.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/add")

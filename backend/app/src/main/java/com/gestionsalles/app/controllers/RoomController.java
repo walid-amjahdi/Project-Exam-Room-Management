@@ -1,8 +1,8 @@
-package com.example.demo.controllers;
+package com.gestionsalles.app.controllers;
 
 
-import com.example.demo.models.Room;
-import com.example.demo.services.RoomService;
+import com.gestionsalles.app.models.Room;
+import com.gestionsalles.app.services.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RoomController {
 
     private final RoomService roomServ;
@@ -66,6 +67,15 @@ public class RoomController {
         return ResponseEntity.ok(roomServ.findByName(room.getName()).get());
     }
 
+    @PostMapping
+    public ResponseEntity<Room> addRoomNew(@RequestBody Room room){
+        Optional<Room> r= roomServ.addRoom(room);
+        if(r.isPresent()){
+            return ResponseEntity.ok(r.get());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable Long id, @RequestBody Room room){
@@ -76,8 +86,26 @@ public class RoomController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Room> updateRoomNew(@PathVariable Long id, @RequestBody Room room){
+        Optional<Room> r= roomServ.updateRoomById(id,room);
+        if(r.isPresent()){
+            return ResponseEntity.ok(r.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Room> deleteRoom(@PathVariable Long id){
+        Optional<Room> r= roomServ.deleteRoomById(id);
+        if(r.isPresent()){
+            return ResponseEntity.ok(r.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Room> deleteRoomNew(@PathVariable Long id){
         Optional<Room> r= roomServ.deleteRoomById(id);
         if(r.isPresent()){
             return ResponseEntity.ok(r.get());

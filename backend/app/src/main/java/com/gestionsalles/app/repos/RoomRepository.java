@@ -1,7 +1,6 @@
-package com.example.demo.repos;
+package com.gestionsalles.app.repos;
 
-import com.example.demo.models.Admin;
-import com.example.demo.models.Room;
+import com.gestionsalles.app.models.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,8 @@
-package com.example.demo.services;
+package com.gestionsalles.app.services;
 
-import com.example.demo.models.Admin;
-import com.example.demo.models.Reservation;
-import com.example.demo.repos.AdminRepository;
-import com.example.demo.repos.UserRepository;
+import com.gestionsalles.app.models.Admin;
+import com.gestionsalles.app.repos.AdminRepository;
+import com.gestionsalles.app.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -81,19 +80,8 @@ public class AdminService {
         return adminRepo.findByEmail(email);
     }
 
-    public void manageUsers(){
-
-    }
-    public void manageRooms(){
-
-    }
-    public void validateReservation(Reservation reservation){
-
-    }
-
-    public void rejectReservation(Reservation reservation){
-
-
+    public Optional<Admin> login(String email, String password) {
+        return adminRepo.findByEmailAndPassword(email, password);
     }
 
 

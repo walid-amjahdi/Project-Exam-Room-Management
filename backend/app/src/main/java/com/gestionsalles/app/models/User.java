@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.gestionsalles.app.models;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 //@MappedSuperclass
 @Getter
 @Setter
-@Table(name="users")
+@Table(name="app_users")
 public abstract class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,6 +26,6 @@ public abstract class User {
     @Column(unique = true)
     private String email;
 
-
+    private boolean enabled = true;
 
 }

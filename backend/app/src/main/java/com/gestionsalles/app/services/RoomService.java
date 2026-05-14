@@ -1,8 +1,8 @@
-package com.example.demo.services;
+package com.gestionsalles.app.services;
 
-import com.example.demo.models.Reservation;
-import com.example.demo.models.Room;
-import com.example.demo.repos.RoomRepository;
+import com.gestionsalles.app.models.Reservation;
+import com.gestionsalles.app.models.Room;
+import com.gestionsalles.app.repos.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

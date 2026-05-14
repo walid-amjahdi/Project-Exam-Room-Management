@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.gestionsalles.app.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +15,7 @@ import java.util.*;
 @PrimaryKeyJoinColumn(name="teacher_id",foreignKey = @ForeignKey(name="fk_teacher_user"))
 public class Teacher extends User {
 
-    private String departement;
+    private String department;
 
     private String grade;
 
