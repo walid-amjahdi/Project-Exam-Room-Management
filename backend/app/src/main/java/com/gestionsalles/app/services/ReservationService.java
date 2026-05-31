@@ -58,14 +58,16 @@ public class ReservationService {
 
 
     public Optional<Reservation> addReservation(Reservation reservation) {
+        if (reservation.getRoom() == null) return Optional.empty();
+        
         // Check for conflicts before saving
         if(checkConflicts(reservation.getRoom().getId(), reservation.getReservationDate(), 
                          reservation.getStartTime(), reservation.getEndTime())){
             return Optional.empty(); // Conflict exists, don't save
         }
         
-        reservationRepo.save(reservation);
-        return reservationRepo.findById(reservation.getId());
+        Reservation saved = reservationRepo.save(reservation);
+        return Optional.of(saved);
     }
 
     public Optional<Reservation> updateReservationById(Long id, Reservation reservation) {

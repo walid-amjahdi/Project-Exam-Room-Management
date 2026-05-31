@@ -78,7 +78,11 @@ public class AdminController {
         if(adm.isPresent()){
             return ResponseEntity.ok(adm.get());
         }
-        return ResponseEntity.ok(adminServ.findByEmail(admin.getEmail()).get());
+        Optional<Admin> existing = adminServ.findByEmail(admin.getEmail());
+        if(existing.isPresent()){
+            return ResponseEntity.ok(existing.get());
+        }
+        return ResponseEntity.badRequest().build();
 
     }
 

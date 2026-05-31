@@ -93,7 +93,7 @@ function ManageTeachers() {
           id: teacherId || undefined,
           name: teacherName,
           email: teacherEmail,
-          password: teacherPassword,
+          password: teacherPassword || undefined,
           role: 'TEACHER',
           department: teacherDepartment,
           grade: teacherGrade,

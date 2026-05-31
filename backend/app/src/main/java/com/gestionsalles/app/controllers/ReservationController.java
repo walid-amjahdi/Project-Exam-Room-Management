@@ -21,7 +21,7 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> findAllReservations(){
         List<Reservation> reservations= reservationServ.findAllReservations();
         if(reservations.isEmpty()){
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(List.of());
         }
         return ResponseEntity.ok(reservations);
     }
@@ -30,7 +30,7 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> findPendingReservations(){
         List<Reservation> reservations= reservationServ.findAllPendingReservations();
         if(reservations.isEmpty()){
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(List.of());
         }
         return ResponseEntity.ok(reservations);
     }

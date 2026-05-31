@@ -67,7 +67,7 @@ public class RoomService {
     }
 
     public List<Reservation> getActiveReservations(){
-        return null;
+        return List.of();
     }
 
 

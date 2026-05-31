@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface AdminRepository extends JpaRepository<Admin,Long> {
     Optional<Admin> findByEmail(String email);
     Optional<Admin> findByEmailAndPassword(String email, String password);
-    @Query("select a.id,a.name,a.role,count(r.id) from Admin a join a.reservations_admin r group by a.name order by a.id")
+    @Query("select a.id,a.name,a.role,count(r.id) from Admin a join a.reservations_admin r group by a.id, a.name, a.role order by a.id")
     List<Object[]> getAdminInfo();
 
 }

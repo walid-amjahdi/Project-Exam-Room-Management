@@ -64,7 +64,11 @@ public class TeacherController {
         if(teacher1.isPresent()){
             return ResponseEntity.ok(teacher1.get());
         }
-        return ResponseEntity.ok(teacherServ.findByEmail(teacher.getEmail()).get());
+        Optional<Teacher> existing = teacherServ.findByEmail(teacher.getEmail());
+        if(existing.isPresent()){
+            return ResponseEntity.ok(existing.get());
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/update/{id}")
