@@ -86,7 +86,7 @@ function ManageRooms() {
           id: roomId || undefined,
           name: roomName,
           building: roomBuilding,
-          capacity: roomCapacity || undefined,
+          capacity: parseInt(roomCapacity) || 0,
           equipment: roomEquipment
         };
 

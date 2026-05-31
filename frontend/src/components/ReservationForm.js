@@ -105,7 +105,7 @@ function ReservationForm({ userEmail, setActiveTab }) {
           setAcademicYear('');
           setTimeout(() => setActiveTab('myreservations'), 2000);
         } else {
-          const errorData = await response.json();
+          const errorData = response.headers.get('content-length') !== '0' ? await response.json() : {};
           setError(errorData.message || 'Failed to create reservation. Time slot may be conflicted.');
         }
       } catch (err) {

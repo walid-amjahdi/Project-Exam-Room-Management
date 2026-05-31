@@ -44,7 +44,7 @@ public class RoomController {
         if(!rooms.isEmpty()){
             return ResponseEntity.ok(rooms);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(List.of());
     }
 
     @GetMapping("/admin/{id}")
@@ -64,7 +64,11 @@ public class RoomController {
         if(r.isPresent()){
             return ResponseEntity.ok(r.get());
         }
-        return ResponseEntity.ok(roomServ.findByName(room.getName()).get());
+        Optional<Room> existing = roomServ.findByName(room.getName());
+        if(existing.isPresent()){
+            return ResponseEntity.ok(existing.get());
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping

@@ -22,6 +22,7 @@ public class Room {
     private int capacity;
     private String building;
     private String location;
+    private String equipment;
     private Boolean available;
 
     @ManyToOne

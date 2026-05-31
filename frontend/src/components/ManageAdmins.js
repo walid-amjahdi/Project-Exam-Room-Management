@@ -85,7 +85,7 @@ function ManageAdmins() {
           id: adminId || undefined,
           name: adminName,
           email: adminEmail,
-          password: adminPassword,
+          password: adminPassword || undefined,
           role: 'ADMIN',
           isSudo: adminIsSudo
         };
